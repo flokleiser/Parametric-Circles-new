@@ -37,8 +37,10 @@ let weirdRotate = false;
 let centerX, centerY;
 let teleportCount = 0;
 let targetPoints = [];
+let targetPoints2 = [];
 let currentTargetIndex = 0;
-let easing = 0.05;
+let currentTargetIndex2 = 0;
+let easing = 0.068;
 
 let sel; //drop down menu
 
@@ -50,6 +52,7 @@ let newCenterPoint4 = false;
 let newCenterPoint5 = false;
 let newCenterPoint6 = false;
 let newCenterPoint7 = false;
+let newCenterPoint8 = false;
 
 function setup() {
   resetCanvas();
@@ -77,6 +80,7 @@ function setup() {
   sel.option('e = Color Changer');
   sel.option('r = Rotate');
   sel.option('d = Cont. Rotation');
+  sel.option('l,k = Modifiers 1/2');
   sel.option('y = Add. Line 1');
   sel.option('x = Add. Line 2');
   sel.option('c = Add. Line 3');
@@ -97,20 +101,27 @@ function setup() {
   sel.selected('CONTROLS');
   
   //targetpoints
-  // targetPoints.push({ x: width/3, y: height/4 });
-  // targetPoints.push({ x: width/3, y: height/2 });
-  // targetPoints.push({ x: ((width/3)*2), y: (height/2) });
-  // targetPoints.push({ x: ((width/3)*2), y: ((height/4)*3) });
-  // targetPoints.push({ x: width/4, y: height/3 });
-  // targetPoints.push({ x: ((width/4)*3), y: (height/3)*2 });
-  // targetPoints.push({ x: width/2, y: height/2 });
-  targetPoints.push({ x: 0, y: 150 });
-  // targetPoints.push({ x: 500, y: 500 });
-  // targetPoints.push({ x: ((width/3)*2), y: (height/2) });
-  // targetPoints.push({ x: ((width/3)*2), y: ((height/4)*3) });
-  // targetPoints.push({ x: width/4, y: height/3 });
-  // targetPoints.push({ x: ((width/4)*3), y: (height/3)*2 });
-  // targetPoints.push({ x: width/2, y: height/2 });
+  targetPoints.push({ x: width/3, y: height/4 });
+  targetPoints.push({ x: width/3, y: height/2 });
+  targetPoints.push({ x: ((width/3)*2), y: (height/2) });
+  targetPoints.push({ x: ((width/3)*2), y: ((height/4)*3) });
+  targetPoints.push({ x: width/4, y: height/3 });
+  targetPoints.push({ x: ((width/4)*3), y: (height/3)*2 });
+  targetPoints.push({ x: width/2, y: height/2 });
+  
+  targetPoints2.push({ x: width/2, y: height/2});
+  targetPoints2.push({ x: width/2-400, y: height/2 });
+  targetPoints2.push({ x: width/2, y: height/2});
+  targetPoints2.push({ x: width/2-200, y: height/2+200});
+  targetPoints2.push({ x: width/2, y: height/2});
+  targetPoints2.push({ x: width/2+200, y: height/2+200});
+  targetPoints2.push({ x: width/2, y: height/2});
+  targetPoints2.push({ x: width/2+400, y: height/2});
+  targetPoints2.push({ x: width/2, y: height/2});
+  targetPoints2.push({ x: width/2+200, y: height/2-200});
+  targetPoints2.push({ x: width/2, y: height/2});
+  targetPoints2.push({ x: width/2-200, y: height/2-200});
+  targetPoints2.push({ x: width/2, y: height/2});
 }
 
 function draw() {
@@ -124,6 +135,11 @@ function parametricLines() {
   if (followMouse) {
     centerX = mouseX;
     centerY = mouseY;
+  }
+  if (!newCenterPoint7) {
+    if (modifier2) {
+    randomSwitch();
+    }
   }
 
   //color logic
@@ -217,29 +233,7 @@ function parametricLines() {
       let angleIncrement = TWO_PI / numPoints;
       angle += 0.01 * angleIncrement;
     }
-    if (newCenterPoint4) { 
-
-    // //some lines v1
-    // selectedCenterPoint = 4;
-    // followMouse = false;
-    
-    // let w = width/2; 
-    // let h = height/2;
-    // let spacing = 50;
-
-    // createMaze(centerX, centerY, w, h);
-
-    // function createMaze(x, y, w, h) {
-    //   if (w < spacing || h < spacing) {
-    //   return;
-    //   }
-
-    //   line(x, y - h / 2, x, y + h / 2);
-
-    //   createMaze(x - w / 4, y, w / 2, h);
-    //   createMaze(x + w / 4, y, w / 2, h);
-    //   }
-
+    if (newCenterPoint4) {
     //some lines v2
     selectedCenterPoint = 4;
     isRotating = !isRotating;
@@ -267,33 +261,33 @@ function parametricLines() {
       followMouse = false;
       // isRotating = !isRotating;
     
-      //v1
-      // centerX = width/2 + xMove;
-      // centerY = height/2;
+      if(modifier1) {
+        centerX = width/2 + xMove;
+        centerY = height/2;
 
-      // angleRotate += -PI;
-      // rotate(-angleRotate);
+      angleRotate += -PI;
+      rotate(-angleRotate);
+      }
 
-    //v2 
+    else {
+      yMove = tan(xMove * 0.01)*150;
+      centerX = width/2 + xMove; 
+      centerY = height/2 + yMove;
+      let moveAmount = 400;
 
-    yMove = tan(xMove * 0.01)*150;
-    centerX = width/2 + xMove; 
-    centerY = height/2 + yMove;
-    let moveAmount = 400;
-
-    if (xMove >= -moveAmount && xMove <=moveAmount) {
-      xMove +=  (PI) * direction;
+      if (xMove >= -moveAmount && xMove <=moveAmount) {
+        xMove +=  (PI) * direction;
+      }
+      if (xMove >= moveAmount || xMove <= -moveAmount) {
+        direction *= -1;
+      }
+      xMove = constrain(xMove,-moveAmount,moveAmount);
     }
-    if (xMove >= moveAmount || xMove <= -moveAmount) {
-      direction *= -1;
-    }
-    xMove = constrain(xMove,-moveAmount,moveAmount);
-
     }
     if (newCenterPoint6) {
       selectedCenterPoint = 6;
       followMouse = false;
-      // isRotating = !isRotating;
+      isRotating = !isRotating;
       newLine4 = !newLine4;
       // verticalLine = false;
 
@@ -312,61 +306,47 @@ function parametricLines() {
     if (newCenterPoint7) {
       selectedCenterPoint = 7;
       isRotating = !isRotating;
-    
-    //bouncy inframe
-    centerX += speedX;
-    centerY += speedY;
-    
-    if (!verticalLine) {
-      if (!newLine5) {
-        if (centerY > height -25|| centerY < 25) {
-        speedY *= -1;
-        }
-        if (centerX > width - 175 || centerX < 175) {
-          speedX *= -1;
-        }
-      }  
-      else if (newLine5) {
-        if (centerY > height -105|| centerY < 105) {
-          speedY *= -1;
+
+      if (!modifier1) {
+        centerX += speedX;
+        centerY += speedY;
+        
+        if (!verticalLine) {
+          if (!newLine5) {
+            if (centerY > height -25|| centerY < 25) {
+            speedY *= -1;
+            }
+            if (centerX > width - 175 || centerX < 175) {
+              speedX *= -1;
+            }
+          }  
+          else if (newLine5) {
+            if (centerY > height -105|| centerY < 105) {
+              speedY *= -1;
+              }
+              if (centerX > width - 175 || centerX < 175) {
+                speedX *= -1;
+              }
+            }
           }
-          if (centerX > width - 175 || centerX < 175) {
-            speedX *= -1;
+      
+          else if (verticalLine) {
+          if (centerY > height -175|| centerY < 175) {
+            speedY *= -1;
+            }
+          if (centerX > width - 25 || centerX < 25) {
+              speedX *= -1;
+          }
+        } 
+        
+        if (modifier2) {
+          if (centerX > 175 && centerX < width - 175 && centerY > 175 && centerY < height - 175) {
+            //'b' automatic, 's' automatic, 't' automatic.
+            randomSwitch();
           }
         }
       }
-   
-      else if (verticalLine) {
-      if (centerY > height -175|| centerY < 175) {
-        speedY *= -1;
-        }
-      if (centerX > width - 25 || centerX < 25) {
-          speedX *= -1;
-      }
-    } 
 
-    if (centerX > 175 && centerX < width - 175 && centerY > 175 && centerY < height - 175) {
-        //'b' automatic, 's' automatic, 't' automatic.
-        if (millis() - lastSwitchTime >= switchInterval) {
-          if (random(2) > 1) {
-            verticalLine = !verticalLine;
-          }
-          else {
-            newLine5 = !newLine5;
-          }
-        lastSwitchTime = millis();
-        }
-    }
-
-    //normal bouncy
-    // centerX += speedX;
-    // centerY += speedY;
-    // if (centerX > width - 175 || centerX < 175) {
-    //   speedX *= -1;
-    // }
-    // if (centerY > height -175|| centerY < 175) {
-    //   speedY *= -1;
-    // }
     
     //teleporting lines
     // centerX += speedX;
@@ -382,20 +362,26 @@ function parametricLines() {
     // }     
 
     //tping lines out of frame
-    centerX += speedX;
-    centerY += speedY;
-    if(centerX > width && verticalLine) {
-      centerX = 0;
-    }
-    if(centerX > width+150 && !verticalLine) {
-      centerX = -150;
-    }
-    if(centerY < 0 && !verticalLine) {
-        centerY = height;
+    if (modifier1) {
+      centerX += speedX;
+      centerY += speedY;
+      if(centerX > width && verticalLine) {
+        centerX = 0;
       }
-    if(centerY < -150 && verticalLine) {
-        centerY = height + 150;
+      if(centerX > width+150 && !verticalLine) {
+        centerX = -150;
+      }
+      if(centerY < 0 && !verticalLine) {
+          centerY = height;
+        }
+      if(centerY < -150 && verticalLine) {
+          centerY = height + 150;
+      }
+
+      if (modifier2) {
+        randomSwitch();
     }
+  }
       
     //tping lines IN frame
     // centerX += speedX;
@@ -463,16 +449,27 @@ function parametricLines() {
     // }
     }
     if (newCenterPoint8) {
+      if (!modifier1) {
+      centerX = lerp(centerX, targetPoints2[currentTargetIndex2].x, easing);
+      centerY = lerp(centerY, targetPoints2[currentTargetIndex2].y, easing);
+    
+      let d = dist(centerX, centerY, targetPoints2[currentTargetIndex2].x, targetPoints2[currentTargetIndex2].y);
       
+        if (d < 1) {
+          currentTargetIndex2 = (currentTargetIndex2 + 1) % targetPoints2.length;
+        }
+      }
+    if(modifier1) {
       centerX = lerp(centerX, targetPoints[currentTargetIndex].x, easing);
       centerY = lerp(centerY, targetPoints[currentTargetIndex].y, easing);
     
       let d = dist(centerX, centerY, targetPoints[currentTargetIndex].x, targetPoints[currentTargetIndex].y);
-      if (d < 1) {
-        currentTargetIndex = (currentTargetIndex + 1) % targetPoints.length;
+        if (d < 1) {
+          currentTargetIndex = (currentTargetIndex + 1) % targetPoints.length;
+        }
       }
-  }
-
+    }
+    
   if (keyCode === SHIFT) {
     centerX = width/2;
     centerY = height/2;
@@ -625,6 +622,19 @@ function toggleRotationStep(increase) {
   }
 }
 
+function randomSwitch() {
+  if (millis() - lastSwitchTime >= switchInterval) {
+    if (random(2) > 1) {
+      verticalLine = !verticalLine;
+      newLine6 = !newLine6;
+    }
+    else {
+      newLine5 = !newLine5;
+    }
+  lastSwitchTime = millis();
+  }
+}
+
 function keyPressed() {
     if (keyCode === 13) {
       let filename = 'canvas newCenterPoint' + selectedCenterPoint + ' nr ' + frameCount + '.jpg';
@@ -707,7 +717,15 @@ function keyPressed() {
     }
     else if (key === 'm') {
       newStandartLine = !newStandartLine;
-      console.log(newStandartLine);
+      console.log('New Line 7: ',newStandartLine);
+    }
+    else if (key === 'l') {
+      modifier1 = !modifier1;
+      console.log('Modifier 1: ',modifier1);
+    }
+    else if (key === 'k') {
+      modifier2 = !modifier2;
+      console.log('Modifier 2: ',modifier2);
     }
     else if (key === '1') {
       newCenterPoint1 = !newCenterPoint1;
@@ -765,6 +783,8 @@ function resetCanvas() {
     angleRotate = 0;
     followMouse = false;
     toggleRotate = false;
+    modifier1 = false;
+    modifier2 = false;
     newLine1 = false;
     newLine2 = false;
     newLine3 = false;
