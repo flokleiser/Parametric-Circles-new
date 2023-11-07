@@ -104,13 +104,13 @@ function setup() {
   // targetPoints.push({ x: width/4, y: height/3 });
   // targetPoints.push({ x: ((width/4)*3), y: (height/3)*2 });
   // targetPoints.push({ x: width/2, y: height/2 });
-  targetPoints.push({ x: width/3, y: height/4 });
-  targetPoints.push({ x: width/3, y: height/2 });
-  targetPoints.push({ x: ((width/3)*2), y: (height/2) });
-  targetPoints.push({ x: ((width/3)*2), y: ((height/4)*3) });
-  targetPoints.push({ x: width/4, y: height/3 });
-  targetPoints.push({ x: ((width/4)*3), y: (height/3)*2 });
-  targetPoints.push({ x: width/2, y: height/2 });
+  targetPoints.push({ x: 0, y: 150 });
+  // targetPoints.push({ x: 500, y: 500 });
+  // targetPoints.push({ x: ((width/3)*2), y: (height/2) });
+  // targetPoints.push({ x: ((width/3)*2), y: ((height/4)*3) });
+  // targetPoints.push({ x: width/4, y: height/3 });
+  // targetPoints.push({ x: ((width/4)*3), y: (height/3)*2 });
+  // targetPoints.push({ x: width/2, y: height/2 });
 }
 
 function draw() {
