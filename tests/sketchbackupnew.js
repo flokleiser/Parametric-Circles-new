@@ -13,7 +13,6 @@ let amplitude; //good values = 60, 90, 120
 let frequency = 0.05; //good values= 0.06, 0.006
 let angleX = 0;
 let angleY = 0;
-let targetX, targetY;
 let radius = 10; 
 let angle = 0;
 let aMove = 0;
@@ -38,7 +37,6 @@ let centerX, centerY;
 let teleportCount = 0;
 let targetPoints = [];
 let currentTargetIndex = 0;
-let easing = 0.05;
 
 let sel; //drop down menu
 
@@ -82,12 +80,11 @@ function setup() {
   sel.option('c = Add. Line 3');
   sel.option('v = Add. Line 4');
   sel.option('b = Add. Line 5');
-  sel.option('n = Add. Line 6');
-  sel.option('m = Add. Line 7');
+  sel.option('')
   sel.option('s = - or | Line');
   sel.option('f = Wide Rotate');
   sel.option('t = Automatic Color');
-  sel.option('1-8 = Drawings');
+  sel.option('1-7 = Drawings');
   sel.option('§ = Reset Canvas');
   sel.option('↑/↓ = toggleR+/-')
   sel.option('g = Half-Rotate');
@@ -97,13 +94,6 @@ function setup() {
   sel.selected('CONTROLS');
   
   //targetpoints
-  // targetPoints.push({ x: width/3, y: height/4 });
-  // targetPoints.push({ x: width/3, y: height/2 });
-  // targetPoints.push({ x: ((width/3)*2), y: (height/2) });
-  // targetPoints.push({ x: ((width/3)*2), y: ((height/4)*3) });
-  // targetPoints.push({ x: width/4, y: height/3 });
-  // targetPoints.push({ x: ((width/4)*3), y: (height/3)*2 });
-  // targetPoints.push({ x: width/2, y: height/2 });
   targetPoints.push({ x: width/3, y: height/4 });
   targetPoints.push({ x: width/3, y: height/2 });
   targetPoints.push({ x: ((width/3)*2), y: (height/2) });
@@ -121,6 +111,7 @@ function draw() {
 
 function parametricLines() {
 
+  
   if (followMouse) {
     centerX = mouseX;
     centerY = mouseY;
@@ -140,7 +131,7 @@ function parametricLines() {
 
     //gradient purple
     redVal = map(centerX, 0, height, 75, 200); 
-    greenVal = map(centerY, 0, width, 75, 100);
+    greenVal = map(centerY, 0, width, 75, 200);
     blueVal = 200;
 
     redVal2 = map(centerX, 0, height, 75, 200); 
@@ -462,16 +453,6 @@ function parametricLines() {
     //     centerY = height - 75;
     // }
     }
-    if (newCenterPoint8) {
-      
-      centerX = lerp(centerX, targetPoints[currentTargetIndex].x, easing);
-      centerY = lerp(centerY, targetPoints[currentTargetIndex].y, easing);
-    
-      let d = dist(centerX, centerY, targetPoints[currentTargetIndex].x, targetPoints[currentTargetIndex].y);
-      if (d < 1) {
-        currentTargetIndex = (currentTargetIndex + 1) % targetPoints.length;
-      }
-  }
 
   if (keyCode === SHIFT) {
     centerX = width/2;
@@ -603,16 +584,9 @@ function parametricLines() {
   
   //standart line drawing
   else {
-    if(!newStandartLine){
-      strokeWeight(2);
-      stroke(redVal, greenVal, blueVal, alphaVal); 
-      line(150,0,-150,0);
-    }
-    if(newStandartLine) {
-      strokeWeight(2);
-      stroke(redVal,greenVal,blueVal,alphaVal);
-      line(0,0,width,-height);
-    }
+    strokeWeight(2);
+    stroke(redVal, greenVal, blueVal, alphaVal); 
+    line(150,0,-150,0);
   }
 }
 
@@ -705,10 +679,6 @@ function keyPressed() {
       newLine6 = !newLine6;
       console.log('New Line 6: ', newLine6);
     }
-    else if (key === 'm') {
-      newStandartLine = !newStandartLine;
-      console.log(newStandartLine);
-    }
     else if (key === '1') {
       newCenterPoint1 = !newCenterPoint1;
       console.log('X,Y (1) automatic: ', newCenterPoint1);
@@ -737,11 +707,6 @@ function keyPressed() {
       newCenterPoint7 = !newCenterPoint7;
       console.log('X,Y (7) automatic: ', newCenterPoint7);
     }
-    else if(key === '8') {
-      newCenterPoint8 = !newCenterPoint8;
-      console.log('X,Y (8) automatic: ', newCenterPoint8);
-
-    }
     else if (key === '§') {
       resetCanvas();
     }
@@ -760,6 +725,7 @@ function resetCanvas() {
   clear();
     background(50);
     drawing = false;
+    drawing2 = false;
     centerX = width / 2;
     centerY = height / 2;
     angleRotate = 0;
@@ -771,7 +737,6 @@ function resetCanvas() {
     newLine4 = false;
     newLine5 = false;
     newLine6 = false;
-    newStandartLine = false;
     changeAngle = false;
     colorChanger = false;
     isRotating = true;
@@ -784,7 +749,6 @@ function resetCanvas() {
     newCenterPoint3 = false;
     newCenterPoint4 = false;
     newCenterPoint5 = false;
-    newCenterPoint6 = false;
-    newCenterPoint7 = false;
-    newCenterPoint8 = false;
+    newCenterpoint6 = false;
+    newCenterpoint7 = false;
 }
