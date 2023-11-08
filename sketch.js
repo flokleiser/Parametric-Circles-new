@@ -3,12 +3,12 @@
 let x, y;
 let rotationStep;
 let clockwiseRotation = true;
-// let speedX = 0.75; //for bouncy line
-// let speedY = -2;
+let speedX = 0.75;
+let speedY = -2;
 
 //TESTING
-let speedX = 3;
-let speedY = -5;
+// let speedX = 3;
+// let speedY = -5;
 
 let downright;
 let upright;
@@ -328,10 +328,21 @@ function parametricLines() {
       selectedCenterPoint = 7;
       isRotating = !isRotating;
 
+      if (speedX > 0 && speedY > 0) {
+        direction = downright;
+      } else if (speedX > 0 && speedY < 0) {
+        direction = upright;
+      } else if (speedX < 0 && speedY > 0) {
+        direction = downleft;
+      } else if (speedX < 0 && speedY < 0) {
+        direction = upleft;
+      }
+      //todo: fix bouncy one pixel too high
       if (!modifier1 && !modifier3) {
         centerX += speedX;
         centerY += speedY;
-        
+
+        //todo: fix one pixel too high when bouncy
         if (!verticalLine) {
           if (!newLine5) {
             if (centerY > height -25|| centerY < 25) {
@@ -368,22 +379,56 @@ function parametricLines() {
         }
     }
 
-      //modifier3 = tping out frame, needed changes: downwards also working
+      //tping out frame
       if (modifier1) {
       modifier3 = false;
       centerX += speedX;
       centerY += speedY;
-      if(centerX > width && verticalLine) {
-        centerX = 0;
-      }
-      if(centerX > width+150 && !verticalLine) {
-        centerX = -150;
-      }
-      if(centerY < 0 && !verticalLine) {
-          centerY = height;
+      
+      if (direction === upright) {
+        if(centerX > width && verticalLine) {
+          centerX = 0;
         }
-      if(centerY < -150 && verticalLine) {
-          centerY = height + 150;
+        if(centerX > width+150 && !verticalLine) {
+          centerX = -150;
+        }
+        if(centerY < 0 && !verticalLine) {
+            centerY = height;
+          }
+        if(centerY < -150 && verticalLine) {
+            centerY = height + 150;
+        }
+      }
+
+      if (direction === downright) {
+        if(centerX > width && verticalLine) {
+          centerX = 0;
+        }
+        if(centerX > width+300 && !verticalLine) {
+          centerX = -300;
+        }
+        if(centerY > height && !verticalLine) {
+          centerY = 0;
+
+        }
+        if(centerY > height + 150 && verticalLine) {
+          centerY = -150;
+          console.log('check');
+        }
+      } 
+      if (direction === upleft) {
+        if(centerX < 0 && verticalLine) {
+          centerX = width;
+        }
+        if(centerX < -150 && !verticalLine) {
+          centerX = width + 150;
+        }
+        if(centerY < 0 && !verticalLine) {
+            centerY = height;
+          }
+        if(centerY < -150 && verticalLine) {
+            centerY = height + 150;
+        }
       }
 
       if (modifier2) {
@@ -391,22 +436,11 @@ function parametricLines() {
       }
       }   
       
-      //modifier3 = tping in frame, needed changes: downwards also working
+      //tping in frame
       if (modifier3) {
         modifier1 = false;
         centerX += speedX;
         centerY += speedY;
-
-
-        if (speedX > 0 && speedY > 0) {
-          direction = downright;
-        } else if (speedX > 0 && speedY < 0) {
-          direction = upright;
-        } else if (speedX < 0 && speedY > 0) {
-          direction = downleft;
-        } else if (speedX < 0 && speedY < 0) {
-          direction = upleft;
-        }
         
         if (direction === upright) {
             if(centerX > width - 25 && verticalLine) {
@@ -427,9 +461,26 @@ function parametricLines() {
           if(centerX > width - 25 && verticalLine) {
             centerX = 25;
           }
-          if(centerX > width - 175 && !verticalLine /* && centerY < 75 */ ) {
+          if(centerX > width - 175 && !verticalLine) {
             centerX = 175;
           }
+          if(centerY > height - 175 && verticalLine) {
+              centerY = 175;
+          }
+          if(centerY > height - 25 && !verticalLine) {
+              centerY = 25;
+          }
+        }
+
+        if (direction === upleft) {
+          //change here
+          if(centerX < 25 && verticalLine) {
+            centerX = width - 25;
+          }
+          if(centerX < 175 && !verticalLine  ) {
+            centerX = width -175;
+          }
+          
           if(centerY < 175 && verticalLine) {
               centerY = height - 175;
           }
