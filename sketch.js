@@ -290,24 +290,38 @@ function parametricLines() {
       isRotating = !isRotating;
       newLine4 = !newLine4;
       // verticalLine = false;
-
-      if (teleportCount < 2) {
+      if (!modifier1) {
+        if (teleportCount < 2) {
         centerX = targetPoints[currentTargetIndex].x;
         centerY = targetPoints[currentTargetIndex].y;
         currentTargetIndex++;
     
-        if (currentTargetIndex >= targetPoints.length) {
+          if (currentTargetIndex >= targetPoints.length) {
           currentTargetIndex = 0;
           teleportCount = 0;
           teleportCount++;
+          }
         }
-     }
+      }
+      if (modifier1) {
+        if (teleportCount < 2) {
+          centerX = targetPoints2[currentTargetIndex2].x;
+          centerY = targetPoints2[currentTargetIndex2].y;
+          currentTargetIndex2++;
+      
+            if (currentTargetIndex2 >= targetPoints2.length) {
+            currentTargetIndex2 = 0;
+            teleportCount = 0;
+            teleportCount++;
+            }
+          }
+      }
     }
     if (newCenterPoint7) {
       selectedCenterPoint = 7;
       isRotating = !isRotating;
 
-      if (!modifier1) {
+      if (!modifier1 && !modifier3) {
         centerX += speedX;
         centerY += speedY;
         
@@ -345,24 +359,10 @@ function parametricLines() {
             randomSwitch();
           }
         }
-      }
+    }
 
-    
-    //teleporting lines
-    // centerX += speedX;
-    // centerY += speedY;
-    // if (centerX > width - 175) {
-    //   centerX = 175;
-    //   centerX += speedX;
-    // }
-    // if (centerY < 175) {
-      
-    //   centerY = height - 175;
-    //   centerY += speedY;
-    // }     
-
-    //tping lines out of frame
-    if (modifier1) {
+    //modifier3 = tping out frame, needed changes: more margin top/bottom, downwards also working
+      if (modifier1) {
       centerX += speedX;
       centerY += speedY;
       if(centerX > width && verticalLine) {
@@ -380,76 +380,33 @@ function parametricLines() {
 
       if (modifier2) {
         randomSwitch();
-    }
-  }
+      }
+      }   
       
-    //tping lines IN frame
-    // centerX += speedX;
-    // centerY += speedY;
-    // if(centerX > width - 75 && verticalLine) {
-    //   centerX = 75;
-    // }
-    // if(centerX > width - 225 && !verticalLine /* && centerY < 75 */ ) {
-    //   centerX = 255;
-    // }
-    // if(centerY < 225 && verticalLine) {
-    //     centerY = height - 225;
-    // }
-    // if(centerY < 75 && !verticalLine) {
-    //     centerY = height - 75;
-    // }
+      //modifier3 = tping in frame, needed changes: more margin top/bottom, downwards also working
+      if (modifier3 && !modifier1) {
+        centerX += speedX;
+        centerY += speedY;
+        if(centerX > width - 75 && verticalLine) {
+          centerX = 75;
+        }
+        if(centerX > width - 225 && !verticalLine /* && centerY < 75 */ ) {
+          centerX = 255;
+        }
+        if(centerY < 225 && verticalLine) {
+            centerY = height - 225;
+        }
+        if(centerY < 75 && !verticalLine) {
+            centerY = height - 75;
+        }
 
-    //  //'b' automatic, 's' automatic, 't' automatic.
-    //     if (millis() - lastSwitchTime >= switchInterval) {
-    //       if (random(2) > 1) {
-    //         verticalLine = !verticalLine;
-    //       }
-    //       else {
-    //         newLine5 = !newLine5;
-    //       }
-    //     lastSwitchTime = millis();
-    //     }
-   
-    //tping lines reverse speed
-    // centerX += speedX;
-    // centerY += speedY;
-    // if(centerX > width - 75 && verticalLine) {
-    //   centerX = 75;
-    // }
-    // if(centerX > width - 225 && !verticalLine /* && centerY < 75 */ ) {
-    //   centerX = 255;
-    // }
-    // if(centerY < 225 && verticalLine) {
-    //     centerY = height - 225;
-    //     if (random(2) > 1) {
-    //       speedX *= -1.1;
-    //     }
-    //   }
-    //   if(centerY < 75 && !verticalLine) {
-    //     centerY = height - 75;
-    // }
-    
-    //tping lines IN frame + randomness
-    // centerX += speedX;
-    // centerY += speedY;
-    // if(centerX > width - 75 && verticalLine) {
-    //   centerX = 75;
-    // }
-    // if(centerX > width - 225 && !verticalLine /* && centerY < 75 */ ) {
-    //   centerX = 255;
-    // }
-    // if(centerY < 225 && verticalLine) {
-    //     centerY = height - 225;
-    //     centerX = width/2 + random(-1000,1000);
-    //     centerX += speedX;
-    //     speedX *= -1;
-    // }
-    // if(centerY < 75 && !verticalLine) {
-    //     centerY = height - 75;
-    // }
+        if (modifier2) {
+          randomSwitch();
+        }
+      }
     }
     if (newCenterPoint8) {
-      if (!modifier1) {
+      if (!modifier1 && !modifier3) {
       centerX = lerp(centerX, targetPoints2[currentTargetIndex2].x, easing);
       centerY = lerp(centerY, targetPoints2[currentTargetIndex2].y, easing);
     
@@ -459,10 +416,10 @@ function parametricLines() {
           currentTargetIndex2 = (currentTargetIndex2 + 1) % targetPoints2.length;
         }
       }
-    if(modifier1) {
+    if(modifier1 && !modifier3) {
       centerX = lerp(centerX, targetPoints[currentTargetIndex].x, easing);
       centerY = lerp(centerY, targetPoints[currentTargetIndex].y, easing);
-    
+     
       let d = dist(centerX, centerY, targetPoints[currentTargetIndex].x, targetPoints[currentTargetIndex].y);
         if (d < 1) {
           currentTargetIndex = (currentTargetIndex + 1) % targetPoints.length;
@@ -719,6 +676,10 @@ function keyPressed() {
       newStandartLine = !newStandartLine;
       console.log('New Line 7: ',newStandartLine);
     }
+    else if (key === 'j') {
+      modifier3 = !modifier3;
+      console.log('Modifier3: ',modifier3);
+    }
     else if (key === 'l') {
       modifier1 = !modifier1;
       console.log('Modifier 1: ',modifier1);
@@ -785,6 +746,7 @@ function resetCanvas() {
     toggleRotate = false;
     modifier1 = false;
     modifier2 = false;
+    modifier3 = false;
     newLine1 = false;
     newLine2 = false;
     newLine3 = false;
