@@ -236,7 +236,7 @@ function parametricLines() {
       centerY = height/2 + cos(angle) * amplitude;
       angle += 0.01* PI;
       
-      let numPoints = 12;
+      let numPoints = 6;
       let angleIncrement = TWO_PI / numPoints;
       angle += 0.01 * angleIncrement;
     }
@@ -621,15 +621,19 @@ function parametricLines() {
   if (newLine6) {
     stroke(50);
     strokeWeight(6);
-    line(0,20,0,-20);
+    // line(0,20,0,-20);
     
-    // ellipse(0,0,50,50);
-    // square(-25,-25,50);
-    // fill(50);
+    // line(20,0,-20,0);
+    
+    ellipse(0,0,50,50);
+    fill(50);
+    // noFill();
 
+    // square(-25,-25,50);
+  
     // line(15,15,-15,-15);
     // line(15,-15,-15,15);
-    line(20,0,-20,0);
+ 
   }
 
   if (weirdRotate) {
