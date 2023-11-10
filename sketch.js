@@ -30,6 +30,7 @@ let direction = 1;
 let angleDirection = 1;
 let stepSize = 10;
 let spacing = 20;
+let point9direction = 1;
 
 let lastSwitchTime = 0;
 let switchInterval = 2500;
@@ -47,7 +48,8 @@ let targetPoints = [];
 let targetPoints2 = [];
 let currentTargetIndex = 0;
 let currentTargetIndex2 = 0;
-let easing = 0.068;
+// let easing = 0.068;   //needs change
+let easing = 0.04;
 
 let sel; //drop down menu
 
@@ -60,6 +62,7 @@ let newCenterPoint5 = false;
 let newCenterPoint6 = false;
 let newCenterPoint7 = false;
 let newCenterPoint8 = false;
+let newCenterPoint9 = false;
 
 function setup() {
   resetCanvas();
@@ -94,7 +97,8 @@ function setup() {
   sel.option('v = Add. Line 4');
   sel.option('b = Add. Line 5');
   sel.option('n = Add. Line 6');
-  sel.option('m = Add. Line 7');
+  sel.option('n + k = Add. Dot');
+  sel.option('m + s = Big Line');
   sel.option('s = - or | Line');
   sel.option('f = Wide Rotate');
   sel.option('t = Automatic Color');
@@ -116,19 +120,36 @@ function setup() {
   targetPoints.push({ x: ((width/4)*3), y: (height/3)*2 });
   targetPoints.push({ x: width/2, y: height/2 });
   
-  targetPoints2.push({ x: width/2, y: height/2});
-  targetPoints2.push({ x: width/2-400, y: height/2 });
-  targetPoints2.push({ x: width/2, y: height/2});
-  targetPoints2.push({ x: width/2-200, y: height/2+200});
-  targetPoints2.push({ x: width/2, y: height/2});
-  targetPoints2.push({ x: width/2+200, y: height/2+200});
-  targetPoints2.push({ x: width/2, y: height/2});
-  targetPoints2.push({ x: width/2+400, y: height/2});
-  targetPoints2.push({ x: width/2, y: height/2});
-  targetPoints2.push({ x: width/2+200, y: height/2-200});
-  targetPoints2.push({ x: width/2, y: height/2});
-  targetPoints2.push({ x: width/2-200, y: height/2-200});
-  targetPoints2.push({ x: width/2, y: height/2});
+//   targetPoints2.push({ x: width/2, y: height/2});
+//   targetPoints2.push({ x: width/2-400, y: height/2 });
+//   targetPoints2.push({ x: width/2, y: height/2});
+//   targetPoints2.push({ x: width/2-200, y: height/2+300});
+//   targetPoints2.push({ x: width/2, y: height/2});
+//   targetPoints2.push({ x: width/2+200, y: height/2+300});
+//   targetPoints2.push({ x: width/2, y: height/2});
+//   targetPoints2.push({ x: width/2+400, y: height/2});
+//   targetPoints2.push({ x: width/2, y: height/2});
+//   targetPoints2.push({ x: width/2+200, y: height/2-300});
+//   targetPoints2.push({ x: width/2, y: height/2});
+//   targetPoints2.push({ x: width/2-200, y: height/2-300});
+//   targetPoints2.push({ x: width/2, y: height/2});
+// 
+  
+    // targetPoints2.push({ x: width/2, y: height/2});
+    // targetPoints2.push({ x: width/2-700, y: height/2 - 250 });
+    // targetPoints2.push({ x: width/2, y: height/2});
+    // targetPoints2.push({ x: width/2 -700, y: height/2 +250});
+    // targetPoints2.push({ x: width/2, y: height/2});
+    // targetPoints2.push({ x: width/2 -700, y: height/2 +100});
+    // targetPoints2.push({ x: width/2, y: height/2});
+    // targetPoints2.push({ x: width/2 -700, y: height/2 -100});
+
+    targetPoints2.push({ x: width/2 -700, y: height/2 -250});
+    targetPoints2.push({ x: width/2 -350, y: height/2 +250});
+    // targetPoints2.push({ x: width/2, y: height/2});
+    targetPoints2.push({ x: width/2 +350, y: height/2 -250});
+    targetPoints2.push({ x: width/2 +700, y: height/2 +250});
+    // targetPoints2.push({ x: width/2, y: height/2});
 }
 
 function draw() {
@@ -140,13 +161,10 @@ function draw() {
 function parametricLines() {
 
   if (followMouse) {
-    centerX = mouseX;
-    centerY = mouseY;
-  }
-  if (!newCenterPoint7) {
-    if (modifier2) {
-    randomSwitch();
-    }
+    // centerX = mouseX;
+    // centerY = mouseY;
+    centerX = lerp(centerX, mouseX, easing);
+    centerY = lerp(centerY, mouseY, easing);
   }
 
   //color logic
@@ -162,22 +180,22 @@ function parametricLines() {
   else if (autoColor) {
 
     //gradient purple
-    redVal = map(centerX, 0, height, 75, 200); 
-    greenVal = map(centerY, 0, width, 75, 100);
-    blueVal = 200;
+    // redVal = map(centerX, 0, height, 75, 200); 
+    // greenVal = map(centerY, 0, width, 75, 100);
+    // blueVal = 200;
 
-    redVal2 = map(centerX, 0, height, 75, 200); 
-    greenVal2 = map(centerY, 0, width, 75, 200);
-    blueVal2 = 200;
+    // redVal2 = map(centerX, 0, height, 75, 200); 
+    // greenVal2 = map(centerY, 0, width, 75, 200);
+    // blueVal2 = 200;
 
     //nicer colorscheme
-    // redVal = map(centerX, 0, height, 50, 255); 
-    // greenVal = map(centerY, 0, width, 0, 200);
-    // blueVal = 200;
+    redVal = map(centerX, 0, height, 50, 255); 
+    greenVal = map(centerY, 0, width, 0, 200);
+    blueVal = 200;
     
-    // redVal2 = map(centerX, 0, height, 50, 255);  
-    // greenVal2 = map(centerY, 0, width, 0, 255);
-    // blueVal2 = 200;
+    redVal2 = map(centerX, 0, height, 50, 255);  
+    greenVal2 = map(centerY, 0, width, 0, 255);
+    blueVal2 = 200;
     
   //regular color
     // redVal = map(centerY, 0, height, 0, 255); 
@@ -236,7 +254,7 @@ function parametricLines() {
       centerY = height/2 + cos(angle) * amplitude;
       angle += 0.01* PI;
       
-      let numPoints = 6;
+      let numPoints = 12;
       let angleIncrement = TWO_PI / numPoints;
       angle += 0.01 * angleIncrement;
     }
@@ -495,17 +513,10 @@ function parametricLines() {
       }
     }
     if (newCenterPoint8) {
-      if (!modifier1 && !modifier3) {
-      centerX = lerp(centerX, targetPoints2[currentTargetIndex2].x, easing);
-      centerY = lerp(centerY, targetPoints2[currentTargetIndex2].y, easing);
-    
-      let d = dist(centerX, centerY, targetPoints2[currentTargetIndex2].x, targetPoints2[currentTargetIndex2].y);
+      selectedCenterPoint = 8;
       
-        if (d < 1) {
-          currentTargetIndex2 = (currentTargetIndex2 + 1) % targetPoints2.length;
-        }
-      }
-    if(modifier1 && !modifier3) {
+
+      if(modifier1 && !modifier3) {
       centerX = lerp(centerX, targetPoints[currentTargetIndex].x, easing);
       centerY = lerp(centerY, targetPoints[currentTargetIndex].y, easing);
      
@@ -514,8 +525,27 @@ function parametricLines() {
           currentTargetIndex = (currentTargetIndex + 1) % targetPoints.length;
         }
       }
+      
+      if(modifier3 && !modifier1) {
+        centerX = lerp(centerX, targetPoints2[currentTargetIndex2].x, easing);
+        centerY = lerp(centerY, targetPoints2[currentTargetIndex2].y, easing);
+      
+        let d = dist(centerX, centerY, targetPoints2[currentTargetIndex2].x, targetPoints2[currentTargetIndex2].y);
+        
+          if (d < 1) {
+            currentTargetIndex2 = (currentTargetIndex2 + 1) % targetPoints2.length;
+          }
+      }
+      
+      if (modifier2 && modifier1 || modifier2 && modifier3) {
+        console.log('reverse');
+        // currentTargetIndex2 = (currentTargetIndex2 - 1) % targetPoints2.length;
+      }
     }
-    
+    if (newCenterPoint9) {
+      selectedCenterPoint = 9;
+    }
+
   if (keyCode === SHIFT) {
     centerX = width/2;
     centerY = height/2;
@@ -619,21 +649,20 @@ function parametricLines() {
     line(0,80,0,-80);
   }
   if (newLine6) {
-    stroke(50);
-    strokeWeight(6);
-    // line(0,20,0,-20);
     
-    // line(20,0,-20,0);
-    
-    ellipse(0,0,50,50);
-    fill(50);
-    // noFill();
+    if (modifier2 && !newCenterPoint7) {
+      //white line black filled
+      stroke(255);
+      fill(50);
+      strokeWeight(1); 
+      ellipse(0,0,50,50);
+    }
+    else {
+      stroke(50);
+      strokeWeight(6);  
+      line(20,0,-20,0);
+    }
 
-    // square(-25,-25,50);
-  
-    // line(15,15,-15,-15);
-    // line(15,-15,-15,15);
- 
   }
 
   if (weirdRotate) {
@@ -767,7 +796,7 @@ function keyPressed() {
     }
     else if (key === 'm') {
       newStandartLine = !newStandartLine;
-      console.log('New Line 7: ',newStandartLine);
+      console.log('New Long Line (with s)): ',newStandartLine);
     }
     else if (key === 'j') {
       modifier3 = !modifier3;
@@ -817,6 +846,10 @@ function keyPressed() {
     else if (key === '§') {
       resetCanvas();
     }
+    else if (key === '9') {
+      newCenterPoint9 = !newCenterPoint9;
+      console.log('X,Y (9) Automatic: '.newCenterPoint9);
+    }
     else if (keyCode === DOWN_ARROW) {
       toggleRotationStep(false);
       console.log("RotateAngle (toggleRotate) decreased");
@@ -862,4 +895,5 @@ function resetCanvas() {
     newCenterPoint6 = false;
     newCenterPoint7 = false;
     newCenterPoint8 = false;
+    newCenterPoint9 = false;
 }
