@@ -87,6 +87,7 @@ function setup() {
   sel.option('Enter = Save');
   sel.option('q = Change Angle');
   sel.option('w = Follow Mouse');
+  sel.option('w + l = Smooth follow')
   sel.option('e = Color Changer');
   sel.option('r = Rotate');
   sel.option('d = Cont. Rotation');
@@ -161,10 +162,18 @@ function draw() {
 function parametricLines() {
 
   if (followMouse) {
-    // centerX = mouseX;
-    // centerY = mouseY;
-    centerX = lerp(centerX, mouseX, easing);
-    centerY = lerp(centerY, mouseY, easing);
+    if (modifier1) {
+      centerX = lerp(centerX, mouseX, easing);
+      centerY = lerp(centerY, mouseY, easing);
+    }
+    if (!modifier1){
+      centerX = mouseX;
+      centerY = mouseY;
+    }
+    if (modifier3) {
+      isRotating = !isRotating;
+      //rotation logic
+    }
   }
 
   //color logic
@@ -521,9 +530,17 @@ function parametricLines() {
       centerY = lerp(centerY, targetPoints[currentTargetIndex].y, easing);
      
       let d = dist(centerX, centerY, targetPoints[currentTargetIndex].x, targetPoints[currentTargetIndex].y);
-        if (d < 1) {
-          currentTargetIndex = (currentTargetIndex + 1) % targetPoints.length;
-        }
+        
+          if (!modifier2){
+            if (d < 1) {
+              currentTargetIndex = (currentTargetIndex + 1) % targetPoints.length;
+            }
+          }
+          else {
+            if (d < 1) {
+              currentTargetIndex2 = (currentTargetIndex2 - 1 + targetPoints2.length) % targetPoints2.length;
+            }
+          }
       }
       
       if(modifier3 && !modifier1) {
@@ -532,14 +549,17 @@ function parametricLines() {
       
         let d = dist(centerX, centerY, targetPoints2[currentTargetIndex2].x, targetPoints2[currentTargetIndex2].y);
         
-          if (d < 1) {
-            currentTargetIndex2 = (currentTargetIndex2 + 1) % targetPoints2.length;
+        //reverse logic
+          if (!modifier2){
+            if (d < 1) {
+              currentTargetIndex2 = (currentTargetIndex2 + 1) % targetPoints2.length;
+            }
           }
-      }
-      
-      if (modifier2 && modifier1 || modifier2 && modifier3) {
-        console.log('reverse');
-        // currentTargetIndex2 = (currentTargetIndex2 - 1) % targetPoints2.length;
+          else {
+            if (d < 1){
+              currentTargetIndex2 = (currentTargetIndex2 - 1 + targetPoints2.length) % targetPoints2.length;
+            }
+          }
       }
     }
     if (newCenterPoint9) {
@@ -555,7 +575,7 @@ function parametricLines() {
     
   translate(centerX, centerY);  
 
-  //rotating logic
+  //rotating logic    --> TODO: FOLLOWMOUSE, SMOOTH ROTATION
   if (isRotating) {
  
     rotate(angleRotate);
@@ -848,7 +868,7 @@ function keyPressed() {
     }
     else if (key === '9') {
       newCenterPoint9 = !newCenterPoint9;
-      console.log('X,Y (9) Automatic: '.newCenterPoint9);
+      console.log('X,Y (9) Automatic: ', newCenterPoint9);
     }
     else if (keyCode === DOWN_ARROW) {
       toggleRotationStep(false);
