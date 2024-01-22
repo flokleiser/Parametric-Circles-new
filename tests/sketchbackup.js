@@ -63,7 +63,7 @@ let newCenterPoint8 = false;
 
 function setup() {
   resetCanvas();
-  pixelDensity(2);
+  pixelDensity(1);
   createCanvas(windowWidth, windowHeight);
   background(50);
 

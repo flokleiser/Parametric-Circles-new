@@ -66,9 +66,10 @@ let newCenterPoint9 = false;
 
 function setup() {
   resetCanvas();
-  pixelDensity(7);
+  pixelDensity(2);
   createCanvas(windowWidth, windowHeight);
   background(50);
+  // background(230);
 
   centerX = width / 2;
   centerY = height / 2;
@@ -86,6 +87,7 @@ function setup() {
   sel.option('space = Draw', 1);
   sel.option('Enter = Save');
   sel.option('q = Change Angle');
+  // sel.selected('q = Change Angle');
   sel.option('w = Follow Mouse');
   sel.option('w + l = Smooth follow')
   sel.option('e = Color Changer');
@@ -162,11 +164,14 @@ function draw() {
 function parametricLines() {
 
   if (followMouse) {
-    if (modifier1) {
-      centerX = lerp(centerX, mouseX, easing);
-      centerY = lerp(centerY, mouseY, easing);
-    }
-    if (!modifier1){
+    centerX = lerp(centerX, mouseX, easing);
+    centerY = lerp(centerY, mouseY, easing);
+
+    // if (modifier1) {
+    //   centerX = lerp(centerX, mouseX, easing);
+    //   centerY = lerp(centerY, mouseY, easing);
+    // }
+    if (modifier1){
       centerX = mouseX;
       centerY = mouseY;
     }
@@ -219,6 +224,10 @@ function parametricLines() {
     redVal = 255;
     greenVal = 255;
     blueVal = 255;
+
+    // redVal = 50;
+    // greenVal = 50;
+    // blueVal = 50;
 
     redVal2 = 255;
     greenVal2 = 255;
