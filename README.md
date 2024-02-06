@@ -1,5 +1,7 @@
-# p5js Project [[https://flokleiser.github.io/Rotations-P5JS/]]
-
+# p5js Project
+___
+### https://flokleiser.github.io/Rotations-P5JS/
+___
 A tool/app for creating art by manipulating lines,
 rotations, movement and using mathematical functions. 
 
