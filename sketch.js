@@ -6,10 +6,6 @@ let clockwiseRotation = true;
 let speedX = 0.75;
 let speedY = -2;
 
-//TESTING
-// let speedX = 3;
-// let speedY = -5;
-
 let downright;
 let upright;
 let downleft;
