@@ -6,10 +6,6 @@ let clockwiseRotation = true;
 let speedX = 0.75;
 let speedY = -2;
 
-//TESTING
-// let speedX = 3;
-// let speedY = -5;
-
 let downright;
 let upright;
 let downleft;
@@ -71,6 +67,8 @@ function setup() {
   background(50);
   // background(230);
 
+  followMouse = true;
+
   centerX = width / 2;
   centerY = height / 2;
 
@@ -80,6 +78,14 @@ function setup() {
   resetButton = createButton('RESET');
   resetButton.position(10,10);
   resetButton.mousePressed(resetCanvas);
+
+  controlButton= createButton('Follow Mouse');
+  controlButton.position(240,10);
+  // controlButton.mousePressed(followMouse);
+  controlButton.mousePressed(function() {
+    followMouse = !followMouse
+  });
+
 
   sel = createSelect();
   sel.position(80,10);
@@ -740,6 +746,13 @@ function randomSwitch() {
       newLine5 = !newLine5;
     }
   lastSwitchTime = millis();
+  }
+}
+
+function mouseClicked() {
+  if (followMouse) {
+  drawing = !drawing;
+  console.log('Drawing: ', drawing);
   }
 }
 
